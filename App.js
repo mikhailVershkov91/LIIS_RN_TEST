@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import AppLoading from "expo-app-loading";
 import { bootstrap } from "./src/bootstrap";
 import { AppNavigation } from "./src/navigation/AppNavigation";
-import { MainScreen } from "./src/screens/MainScreen";
+// import { MainScreen } from "./src/screens/MainScreen";
+import { Provider } from "react-redux";
+import store from "./src/store/store";
 
 const App = () => {
 	const [isReady, setIsReady] = useState(false);
@@ -17,7 +19,11 @@ const App = () => {
 		);
 	}
 
-	return <AppNavigation />;
+	return (
+		<Provider store={store}>
+			<AppNavigation />
+		</Provider>
+	);
 };
 
 export default App;

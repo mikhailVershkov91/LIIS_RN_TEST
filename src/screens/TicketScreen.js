@@ -33,7 +33,7 @@ export const TicketScreen = () => {
 					<View style={styles.details}>
 						<View style={styles.detailsItem}>
 							<Text style={styles.smallDetailsText}>Price</Text>
-							<Text style={styles.mediumText}>23311 ₽</Text>
+							<Text style={styles.mediumText}>23 311 ₽</Text>
 						</View>
 						<View>
 							<Image source={require("../../assets/Verticalline.png")} />
@@ -45,9 +45,7 @@ export const TicketScreen = () => {
 					</View>
 				</View>
 				<View style={styles.carouselContainer}>
-					<View style={styles.carousel}>
 						<Carousel />
-					</View>
 				</View>
 			</View>
 		</View>
@@ -99,9 +97,6 @@ const styles = StyleSheet.create({
 	},
 	carouselContainer: {
 		marginTop: 23,
-	},
-	carousel: {
-		// flexDirection: "row",
 	},
 	smallText: {
 		fontSize: 13,

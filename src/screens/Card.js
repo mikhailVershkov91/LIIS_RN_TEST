@@ -1,15 +1,31 @@
 import React from "react";
-import { View, Image, StyleSheet, Text, VirtualizedList } from "react-native";
+import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { deactivateLike, activateLike } from "../store/ticketsReducer";
+import { useDispatch, useSelector } from "react-redux";
 
-const Card = () => {
+const Card = (props) => {
+	let depatureDate = new Date(
+		props.tickets.data.Dates.OutboundDates[0].PartialDate
+	)
+		.toUTCString()
+		.slice(5, 16);
+
+	const dispatch = useDispatch();
+	const likeIsActive = useSelector((state) => state.tickets.likeIsActive);
+
+	const onPress = () => {
+		if (likeIsActive === true) {
+			dispatch(deactivateLike());
+		} else {
+			dispatch(activateLike());
+		}
+	};
+
 	return (
 		<View style={styles.card}>
 			<View style={styles.infoContainer}>
-				<View style={styles.favourites}>
-					<Image source={require("../../assets/FullHeart.png")} />
-				</View>
 				<View style={styles.infoTopRow}>
-					<View style={styles.image}>
+					<View>
 						<Image source={require("../../assets/Circle.png")} />
 						<Image
 							source={require("../../assets/Plane.png")}
@@ -25,21 +41,38 @@ const Card = () => {
 						<View style={styles.departure}>
 							<Text style={styles.smallText}>VKO</Text>
 							<Image source={require("../../assets/Dash.png")} />
-							<Text style={styles.smallText}>28 June, 2021</Text>
+							<Text style={styles.smallText}>{depatureDate}</Text>
 							<Image source={require("../../assets/Dash.png")} />
-							<Text style={styles.smallText}>14:50</Text>
+							<Text style={styles.smallText}>
+								{props.tickets.data.Dates.OutboundDates[0].QuoteDateTime.slice(
+									11,
+									-3
+								)}
+							</Text>
 						</View>
-						<View style={styles.company}>
-							<Text style={styles.smallText}>Aeroflot</Text>
+						<View>
+							<Text style={styles.smallText}>
+								{props.tickets.data.Carriers[0].Name}
+							</Text>
 						</View>
 					</View>
+					<TouchableOpacity style={styles.favourites} onPress={onPress}>
+						{likeIsActive && (
+							<Image source={require("../../assets/FullHeart.png")} />
+						)}
+						{!likeIsActive && (
+							<Image source={require("../../assets/EmptyHeart.png")} />
+						)}
+					</TouchableOpacity>
 				</View>
 				<View style={styles.line}>
 					<Image source={require("../../assets/Line.png")} />
 				</View>
 				<View style={styles.infoBottom}>
 					<Text style={styles.superSmallText}>Price:</Text>
-					<Text style={styles.bigText}>23 311 ₽</Text>
+					<Text style={styles.bigText}>
+						{props.tickets.data.Quotes[0].MinPrice} ₽
+					</Text>
 				</View>
 			</View>
 		</View>
@@ -49,7 +82,7 @@ const Card = () => {
 const styles = StyleSheet.create({
 	card: {
 		width: 335,
-		height: 140,
+		height: 135,
 		backgroundColor: "#FFFFFF",
 		borderRadius: 10,
 		shadowColor: "#000",
@@ -62,51 +95,41 @@ const styles = StyleSheet.create({
 		elevation: 5,
 		marginBottom: 10,
 	},
-	favourites: {
-		position: "absolute",
-		top: 17,
-		left: 300,
-	},
 	infoContainer: {
 		paddingHorizontal: 10,
 		paddingVertical: 10,
 	},
 	infoTopRow: {
 		flexDirection: "row",
-		alignItems: "center",
+		alignItems: "flex-start",
 		justifyContent: "space-between",
 		marginTop: 10,
 	},
-	image: {
-		marginLeft: 15,
-	},
 	details: {
 		width: 200,
-		marginRight: 44,
 	},
 	cities: {
 		marginBottom: 5,
-		paddingLeft: 10,
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: "space-between",
 	},
 	departure: {
 		marginBottom: 5,
-		paddingLeft: 10,
 		flexDirection: "row",
 		alignItems: "center",
-		justifyContent: "space-around",
+		justifyContent: "space-between",
 	},
-	company: {
-		paddingLeft: 10,
+	favourites: {
+		marginRight: 5,
+		marginTop: -7,
 	},
 	line: {
 		marginTop: 15,
 		marginLeft: 10,
 	},
 	infoBottom: {
-		marginTop: 10,
+		marginTop: 7,
 		paddingRight: 10,
 		flexDirection: "row",
 		justifyContent: "flex-end",

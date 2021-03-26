@@ -1,53 +1,88 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Carousel from "./Carousel";
+import { useSelector, useDispatch } from "react-redux";
+import { deactivateLike, activateLike } from "../store/ticketsReducer";
 
 export const TicketScreen = () => {
+	const dispatch = useDispatch();
+	const tickets = useSelector((state) => state.tickets.tickets);
+	const likeIsActive = useSelector((state) => state.tickets.likeIsActive);
+
+	const onPress = () => {
+		if (likeIsActive === true) {
+			dispatch(deactivateLike());
+		} else {
+			dispatch(activateLike());
+		}
+	};
+
+	const depatureDate = new Date(tickets.data.Dates.OutboundDates[0].PartialDate)
+		.toUTCString()
+		.slice(5, 16);
+
+	const depatureTime = tickets.data.Dates.OutboundDates[0].QuoteDateTime.slice(
+		11,
+		-3
+	);
+
+	// const boardingTime = depatureTime -
+
 	return (
 		<View style={styles.main}>
-			<View style={styles.image}>
-				<Image source={require("../../assets/mainImage.png")} />
-			</View>
-			<View style={styles.ticketContainer}>
-				<View style={styles.favourites}>
-					<Image source={require("../../assets/FullHeart.png")} />
-				</View>
-				<View style={styles.infoContainer}>
-					<View style={styles.info}>
-						<View style={styles.infoText}>
-							<Text style={styles.smallText}>1 Aug, 2021</Text>
-							<Text style={styles.bigText}>SVO</Text>
-							<Text style={styles.smallText}>Moscow</Text>
+			{tickets.data && (
+				<>
+					<View style={styles.image}>
+						<Image source={require("../../assets/mainImage.png")} />
+					</View>
+					<View style={styles.ticketContainer}>
+						<TouchableOpacity style={styles.favourites} onPress={onPress}>
+							{likeIsActive ? (
+								<Image source={require("../../assets/FullHeart.png")} />
+							) : (
+								<Image source={require("../../assets/EmptyHeart.png")} />
+							)}
+						</TouchableOpacity>
+						<View style={styles.infoContainer}>
+							<View style={styles.info}>
+								<View style={styles.infoText}>
+									<Text style={styles.smallText}>{depatureDate}</Text>
+									<Text style={styles.bigText}>SVO</Text>
+									<Text style={styles.smallText}>Moscow</Text>
+								</View>
+								<View>
+									<Image source={require("../../assets/Vector1.png")} />
+								</View>
+								<View>
+									<Text style={styles.smallText}>{depatureTime}</Text>
+									<Text style={styles.bigText}>JFK</Text>
+									<Text style={styles.smallText}>New York City</Text>
+								</View>
+							</View>
 						</View>
-						<View>
-							<Image source={require("../../assets/Vector1.png")} />
+						<View style={styles.detailsContainer}>
+							<View style={styles.details}>
+								<View style={styles.detailsItem}>
+									<Text style={styles.smallDetailsText}>Price</Text>
+									<Text style={styles.mediumText}>
+										{tickets.data.Quotes[0].MinPrice} ₽
+									</Text>
+								</View>
+								<View>
+									<Image source={require("../../assets/Verticalline.png")} />
+								</View>
+								<View style={styles.detailsItem}>
+									<Text style={styles.smallDetailsText}>Boarding</Text>
+									<Text style={styles.mediumText}>19:20</Text>
+								</View>
+							</View>
 						</View>
-						<View>
-							<Text style={styles.smallText}>11:45</Text>
-							<Text style={styles.bigText}>JFK</Text>
-							<Text style={styles.smallText}>New York City</Text>
+						<View style={styles.carouselContainer}>
+							<Carousel />
 						</View>
 					</View>
-				</View>
-				<View style={styles.detailsContainer}>
-					<View style={styles.details}>
-						<View style={styles.detailsItem}>
-							<Text style={styles.smallDetailsText}>Price</Text>
-							<Text style={styles.mediumText}>23 311 ₽</Text>
-						</View>
-						<View>
-							<Image source={require("../../assets/Verticalline.png")} />
-						</View>
-						<View style={styles.detailsItem}>
-							<Text style={styles.smallDetailsText}>Boarding</Text>
-							<Text style={styles.mediumText}>19:20</Text>
-						</View>
-					</View>
-				</View>
-				<View style={styles.carouselContainer}>
-						<Carousel />
-				</View>
-			</View>
+				</>
+			)}
 		</View>
 	);
 };

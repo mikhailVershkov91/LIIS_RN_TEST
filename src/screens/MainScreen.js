@@ -14,37 +14,36 @@ export const MainScreen = ({ navigation }) => {
 
 	const tickets = useSelector((state) => state.tickets.tickets);
 
-	// console.log(tickets);
+	const goToTicket = () => {
+		navigation.navigate("Ticket");
+	};
 
-	// const goToTicket = () => {
-	// 	navigation.navigate("Ticket");
-	// };
-	// const numberOfCards = 4;
+	const numberOfCards = 4;
+
 	return (
 		<View style={styles.center}>
 			<Text>MainScreen</Text>
-			{tickets.data && <Text>{tickets.data.Carriers[0].Name}</Text>}
-			{/* <Button title="Go to ticket" onPress={goToTicket} />
-			{[...Array(numberOfCards)].map(() => (
-				<Card />
-			))} */}
+			<Button title="Go to ticket" onPress={goToTicket} />
+			{tickets.data &&
+				[...Array(numberOfCards)].map(() => <Card tickets={tickets} />)}
+			{/* {tickets.data && <Card tickets={tickets} />} */}
 		</View>
 	);
 };
 
 MainScreen.navigationOptions = {
 	headerTitle: "Flights",
-	tabBarOptions: {
-		labelStyle: {
-			fontSize: 12,
-		},
-		tabStyle: {
-			width: 100,
-		},
-		style: {
-			backgroundColor: "blue",
-		},
-	},
+	// tabBarOptions: {
+	// 	labelStyle: {
+	// 		fontSize: 12,
+	// 	},
+	// 	tabStyle: {
+	// 		width: 100,
+	// 	},
+	// 	style: {
+	// 		backgroundColor: "blue",
+	// 	},
+	// },
 };
 
 const styles = StyleSheet.create({

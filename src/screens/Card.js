@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { deactivateLike, activateLike } from "../store/ticketsReducer";
 import { useDispatch, useSelector } from "react-redux";
 
-const Card = (props) => {
+const Card = ({ navigation, ...props }) => {
 	let depatureDate = new Date(
 		props.tickets.data.Dates.OutboundDates[0].PartialDate
 	)
@@ -11,18 +11,27 @@ const Card = (props) => {
 		.slice(5, 16);
 
 	const dispatch = useDispatch();
-	const likeIsActive = useSelector((state) => state.tickets.likeIsActive);
 
-	const onPress = () => {
-		if (likeIsActive === true) {
-			dispatch(deactivateLike());
+	const likeOnPress = () => {
+		if (props.card.likeIsActive === true) {
+			dispatch(deactivateLike(props.card.id));
 		} else {
-			dispatch(activateLike());
+			dispatch(activateLike(props.card.id));
 		}
 	};
 
+	const cardOnClick = (card) => {
+		navigation.navigate("Ticket", {
+			cardId: card.id,
+			likeOn: card.likeIsActive,
+		});
+	};
+
 	return (
-		<View style={styles.card}>
+		<TouchableOpacity
+			style={styles.card}
+			onPress={() => cardOnClick(props.card)}
+		>
 			<View style={styles.infoContainer}>
 				<View style={styles.infoTopRow}>
 					<View>
@@ -56,11 +65,11 @@ const Card = (props) => {
 							</Text>
 						</View>
 					</View>
-					<TouchableOpacity style={styles.favourites} onPress={onPress}>
-						{likeIsActive && (
+					<TouchableOpacity style={styles.favourites} onPress={likeOnPress}>
+						{props.card.likeIsActive && (
 							<Image source={require("../../assets/FullHeart.png")} />
 						)}
-						{!likeIsActive && (
+						{!props.card.likeIsActive && (
 							<Image source={require("../../assets/EmptyHeart.png")} />
 						)}
 					</TouchableOpacity>
@@ -75,7 +84,7 @@ const Card = (props) => {
 					</Text>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

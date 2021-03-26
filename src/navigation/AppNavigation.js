@@ -10,9 +10,7 @@ import { FavoritesScreen } from "../screens/FavoritesScreen";
 const TicketNavigator = createStackNavigator(
 	{
 		Main: MainScreen,
-		Ticket: {
-			screen: TicketScreen,
-		},
+		Ticket: TicketScreen,
 	},
 	{
 		initialRouteName: "Main",
@@ -47,17 +45,17 @@ const TopNavigator = createBottomTabNavigator({
 	},
 	Favorites: {
 		screen: FavoritesNavigator,
-		tabBarOptions: {
-			labelStyle: {
-				fontSize: 12,
-			},
-			tabStyle: {
-				width: 100,
-			},
-			style: {
-				backgroundColor: "blue",
-			},
-		},
+		// tabBarOptions: {
+		// 	labelStyle: {
+		// 		fontSize: 12,
+		// 	},
+		// 	tabStyle: {
+		// 		width: 100,
+		// 	},
+		// 	style: {
+		// 		backgroundColor: "blue",
+		// 	},
+		// },
 	},
 });
 

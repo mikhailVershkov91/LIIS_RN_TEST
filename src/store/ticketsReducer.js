@@ -2,13 +2,21 @@ export const LOAD_TICKETS = "LOAD_TICKETS";
 export const SET_TICKETS = "SET_TICKETS";
 export const LIKE_ACTIVATE = "LIKE_ACTIVATE";
 export const LIKE_DEACTIVATE = "LIKE_DEACTIVATE";
+// export const SET_CARDS = "SET_CARDS";
 export const TOOGLE_FAVORITE = "TOOGLE_FAVORITE";
 
 const initialState = {
 	tickets: [],
 	favoritesTickets: [],
 	isFavorite: false,
-	likeIsActive: false,
+	// likeIsActive: false,
+	cards: [
+		{ id: 1, likeIsActive: false },
+		{ id: 2, likeIsActive: false },
+		{ id: 3, likeIsActive: false },
+		{ id: 4, likeIsActive: false },
+		{ id: 5, likeIsActive: false },
+	],
 };
 
 const ticketsReducer = (state = initialState, action) => {
@@ -23,26 +31,42 @@ const ticketsReducer = (state = initialState, action) => {
 		case LIKE_ACTIVATE: {
 			return {
 				...state,
-				likeIsActive: true,
+				cards: state.cards.map((card) => {
+					if (card.id === action.id) {
+						return { ...card, likeIsActive: true };
+					}
+					return card;
+				}),
 			};
 		}
 		case LIKE_DEACTIVATE: {
 			return {
 				...state,
-				likeIsActive: false,
+				cards: state.cards.map((card) => {
+					if (card.id === action.id) {
+						return { ...card, likeIsActive: false };
+					}
+					return card;
+				}),
 			};
 		}
+		// case SET_CARDS: {
+		// 	return {
+		// 		...state,
+		// 		cards: [...state.cards, ...action.cards],
+		// 	};
+		// }
 		case TOOGLE_FAVORITE: {
-			const favorites = state.tickets.map((ticket) => {
-				if (ticket.id === action.id) {
-					ticket.isFavorite = !ticket.isFavorite;
+			const cards = state.cards.map((card) => {
+				if (card.id === action.id) {
+					card.isFavorite = !card.isFavorite;
 				}
-				return ticket;
+				return card;
 			});
 			return {
 				...state,
-				tickets,
-				favoritesTickets: action.tickets.filter((ticket) => ticket.favorites),
+				cards,
+				favoritesTickets: action.cards.filter((card) => card.isFavorite),
 			};
 		}
 		default:
@@ -59,16 +83,24 @@ export const setTickets = (tickets) => ({
 	tickets,
 });
 
-export const activateLike = () => ({
+export const activateLike = (id) => ({
 	type: LIKE_ACTIVATE,
+	id,
 });
 
-export const deactivateLike = () => ({
+export const deactivateLike = (id) => ({
 	type: LIKE_DEACTIVATE,
+	id,
 });
+
+// export const setCards = (cards) => ({
+// 	type: SET_CARDS,
+// 	cards,
+// });
 
 export const toogleFavorite = (id) => ({
 	type: TOOGLE_FAVORITE,
 	id,
 });
+
 export default ticketsReducer;

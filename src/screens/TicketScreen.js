@@ -1,19 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import Carousel from "./Carousel";
 import { useSelector, useDispatch } from "react-redux";
 import { deactivateLike, activateLike } from "../store/ticketsReducer";
 
-export const TicketScreen = () => {
+export const TicketScreen = ({ navigation }) => {
+	// console.log(props);
+	const cardId = navigation.getParam("cardId");
+	const likeIsActive = navigation.getParam("likeOn");
+	console.log(likeIsActive);
 	const dispatch = useDispatch();
 	const tickets = useSelector((state) => state.tickets.tickets);
-	const likeIsActive = useSelector((state) => state.tickets.likeIsActive);
+
+	// useEffect(() => {
+	// 	navigation.setParams({likeIsActive: likeIsActive})
+	// }, []);
 
 	const onPress = () => {
 		if (likeIsActive === true) {
-			dispatch(deactivateLike());
+			dispatch(deactivateLike(cardId));
 		} else {
-			dispatch(activateLike());
+			dispatch(activateLike(cardId));
 		}
 	};
 
@@ -25,8 +32,6 @@ export const TicketScreen = () => {
 		11,
 		-3
 	);
-
-	// const boardingTime = depatureTime -
 
 	return (
 		<View style={styles.main}>

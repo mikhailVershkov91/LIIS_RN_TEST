@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Card from "./Card";
 import { useDispatch } from "react-redux";
 import { loadTickets } from "../store/ticketsReducer";
 import { useSelector } from "react-redux";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const MainScreen = ({ navigation }) => {
 	const dispatch = useDispatch();
@@ -13,20 +14,21 @@ export const MainScreen = ({ navigation }) => {
 	}, []);
 
 	const tickets = useSelector((state) => state.tickets.tickets);
-
-	const goToTicket = () => {
-		navigation.navigate("Ticket");
-	};
-
-	const numberOfCards = 4;
+	const cards = useSelector((state) => state.tickets.cards);
 
 	return (
 		<View style={styles.center}>
-			<Text>MainScreen</Text>
-			<Button title="Go to ticket" onPress={goToTicket} />
-			{tickets.data &&
-				[...Array(numberOfCards)].map(() => <Card tickets={tickets} />)}
-			{/* {tickets.data && <Card tickets={tickets} />} */}
+			<ScrollView>
+				{tickets.data &&
+					cards.map((card, key) => (
+						<Card
+							key={card.id}
+							card={card}
+							tickets={tickets}
+							navigation={navigation}
+						/>
+					))}
+			</ScrollView>
 		</View>
 	);
 };

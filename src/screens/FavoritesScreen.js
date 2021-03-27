@@ -16,7 +16,6 @@ export const FavoritesScreen = ({ navigation }) => {
 	const tickets = useSelector((state) => state.tickets.tickets);
 	const cards = useSelector((state) => state.tickets.cards);
 	const filteredCards = cards.filter((card) => card.likeIsActive);
-	console.log(filteredCards);
 
 	return (
 		<View style={styles.center}>
@@ -35,25 +34,12 @@ export const FavoritesScreen = ({ navigation }) => {
 	);
 };
 
-FavoritesScreen.navigationOptions = {
-	// headerTitle: "Favorites",
-	// tabBarOptions: {
-	// 	labelStyle: {
-	// 		fontSize: 12,
-	// 	},
-	// 	tabStyle: {
-	// 		width: 100,
-	// 	},
-	// 	style: {
-	// 		backgroundColor: "blue",
-	// 	},
-	// },
-};
-
 const styles = StyleSheet.create({
 	center: {
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		marginTop: 10,
+
 	},
 });

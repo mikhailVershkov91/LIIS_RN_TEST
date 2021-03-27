@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { deactivateLike, activateLike } from "../store/ticketsReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Card = ({ navigation, ...props }) => {
 	let depatureDate = new Date(

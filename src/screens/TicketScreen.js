@@ -5,16 +5,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { deactivateLike, activateLike } from "../store/ticketsReducer";
 
 export const TicketScreen = ({ navigation }) => {
-	// console.log(props);
 	const cardId = navigation.getParam("cardId");
-	const likeIsActive = navigation.getParam("likeOn");
-	console.log(likeIsActive);
+
 	const dispatch = useDispatch();
 	const tickets = useSelector((state) => state.tickets.tickets);
+	const likeIsActive = useSelector((state) =>
+		state.tickets.cards.some(
+			(card) => card.id === cardId && card.likeIsActive === true
+		)
+	);
 
-	// useEffect(() => {
-	// 	navigation.setParams({likeIsActive: likeIsActive})
-	// }, []);
+	useEffect(() => {
+		navigation.setParams({ likeIsActive });
+	}, [likeIsActive]);
 
 	const onPress = () => {
 		if (likeIsActive === true) {

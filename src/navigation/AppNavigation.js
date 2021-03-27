@@ -2,60 +2,45 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { MainScreen } from "../screens/MainScreen";
 import { TicketScreen } from "../screens/TicketScreen";
-import { THEME } from "../theme";
-// import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 import { FavoritesScreen } from "../screens/FavoritesScreen";
 
-const TicketNavigator = createStackNavigator(
-	{
-		Main: MainScreen,
-		Ticket: TicketScreen,
+const MainNavigator = createStackNavigator({
+	Main: {
+		screen: MainScreen,
+		navigationOptions: {
+			title: "Flights",
+		},
 	},
-	{
-		initialRouteName: "Main",
-		defaultNavigationOptions: {
-			headerStyle: {
-				backgroundColor: THEME.MAIN_COLOR,
-			},
+	Ticket: {
+		screen: TicketScreen,
+		navigationOptions: {
+			title: "Ticket info",
+			header: null,
+		},
+	},
+});
+
+const FavoritesNavigator = createStackNavigator({
+	Favorites: FavoritesScreen,
+	Ticket: {
+		screen: TicketScreen,
+		navigationOptions: {
+			title: "Ticket info",
+			header: null,
 		},
 	}
-);
-
-const FavoritesNavigator = createStackNavigator(
-	{
-		Favorites: FavoritesScreen,
-		Ticket: TicketScreen,
-	},
-	{
-		// defaultNavigationOptions: {
-		// 	headerStyle: {
-		// 		backgroundColor: THEME.MAIN_COLOR,
-		// 	},
-		// },
-	}
-);
+});
 
 const TopNavigator = createBottomTabNavigator({
 	Browse: {
-		screen: TicketNavigator,
+		screen: MainNavigator,
 		navigationOptions: {
 			headerTitle: "Browse",
 		},
 	},
 	Favorites: {
 		screen: FavoritesNavigator,
-		// tabBarOptions: {
-		// 	labelStyle: {
-		// 		fontSize: 12,
-		// 	},
-		// 	tabStyle: {
-		// 		width: 100,
-		// 	},
-		// 	style: {
-		// 		backgroundColor: "blue",
-		// 	},
-		// },
 	},
 });
 

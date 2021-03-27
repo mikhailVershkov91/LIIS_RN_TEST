@@ -2,14 +2,10 @@ export const LOAD_TICKETS = "LOAD_TICKETS";
 export const SET_TICKETS = "SET_TICKETS";
 export const LIKE_ACTIVATE = "LIKE_ACTIVATE";
 export const LIKE_DEACTIVATE = "LIKE_DEACTIVATE";
-// export const SET_CARDS = "SET_CARDS";
 export const TOOGLE_FAVORITE = "TOOGLE_FAVORITE";
 
 const initialState = {
 	tickets: [],
-	favoritesTickets: [],
-	isFavorite: false,
-	// likeIsActive: false,
 	cards: [
 		{ id: 1, likeIsActive: false },
 		{ id: 2, likeIsActive: false },
@@ -25,7 +21,6 @@ const ticketsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				tickets: action.tickets,
-				// favoritesTickets: action.tickets.filter(ticket => ticket.favorites)
 			};
 		}
 		case LIKE_ACTIVATE: {
@@ -50,25 +45,6 @@ const ticketsReducer = (state = initialState, action) => {
 				}),
 			};
 		}
-		// case SET_CARDS: {
-		// 	return {
-		// 		...state,
-		// 		cards: [...state.cards, ...action.cards],
-		// 	};
-		// }
-		case TOOGLE_FAVORITE: {
-			const cards = state.cards.map((card) => {
-				if (card.id === action.id) {
-					card.isFavorite = !card.isFavorite;
-				}
-				return card;
-			});
-			return {
-				...state,
-				cards,
-				favoritesTickets: action.cards.filter((card) => card.isFavorite),
-			};
-		}
 		default:
 			return state;
 	}
@@ -90,16 +66,6 @@ export const activateLike = (id) => ({
 
 export const deactivateLike = (id) => ({
 	type: LIKE_DEACTIVATE,
-	id,
-});
-
-// export const setCards = (cards) => ({
-// 	type: SET_CARDS,
-// 	cards,
-// });
-
-export const toogleFavorite = (id) => ({
-	type: TOOGLE_FAVORITE,
 	id,
 });
 

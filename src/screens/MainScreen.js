@@ -33,25 +33,11 @@ export const MainScreen = ({ navigation }) => {
 	);
 };
 
-MainScreen.navigationOptions = {
-	headerTitle: "Flights",
-	// tabBarOptions: {
-	// 	labelStyle: {
-	// 		fontSize: 12,
-	// 	},
-	// 	tabStyle: {
-	// 		width: 100,
-	// 	},
-	// 	style: {
-	// 		backgroundColor: "blue",
-	// 	},
-	// },
-};
-
 const styles = StyleSheet.create({
 	center: {
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		marginTop: 10
 	},
 });
